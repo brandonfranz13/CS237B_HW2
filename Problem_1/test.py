@@ -109,4 +109,6 @@ class TestForceClosure(unittest.TestCase):
         self.assertFalse(is_in_force_closure(forces, points, friction_coeffs))
 
 if __name__ == '__main__':
+    F = np.ones((6,7))
+    form_closure_program(F)
     unittest.main()

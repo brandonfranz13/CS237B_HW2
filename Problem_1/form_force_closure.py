@@ -33,7 +33,11 @@ def wrench(f, p):
     """
     ########## Your code starts here ##########
     # Hint: you may find cross_matrix(x) defined above helpful. This should be one line of code.
-
+    
+    p_skew = cross_matrix(p)
+    tau = p_skew.dot(f)
+    w = (f, tau)
+    
     ########## Your code ends here ##########
 
     return w
@@ -92,10 +96,17 @@ def form_closure_program(F):
     ########## Your code starts here ##########
     # Hint: You may find np.linalg.matrix_rank(F) helpful
     # TODO: Replace the following program (check the cvxpy documentation)
-
-    k = cp.Variable(1)
-    objective = cp.Minimize(k)
-    constraints = [k >= 0]
+    
+    rank_F = np.linalg.matrix_rank(F)
+    full_rank = min(F.shape)
+    if rank_F != full_rank:
+        return False
+        
+    k = cp.Variable((F.shape[1], 1))
+    
+    objective = cp.Minimize(np.ones((1, F.shape[1])) @ k)
+    constraints = [F@k == 0, k >= 1]
+    
     ########## Your code ends here ##########
 
     prob = cp.Problem(objective, constraints)
