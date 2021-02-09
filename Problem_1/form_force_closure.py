@@ -128,8 +128,15 @@ def is_in_form_closure(forces, points):
     """
     ########## Your code starts here ##########
     # TODO: Construct the F matrix (not necessarily 6 x 7)
-    F = np.zeros((6,7))
-
+    force, torque = wrench(forces[0], points[0])
+    wrenchDims = len(force) + len(torque)
+    numPoints = len(points)
+    F = np.zeros((wrenchDims,numPoints))
+    
+    for pointIdx in range(len(points)):
+        F[:, pointIdx] = np.concatenate([force, torque])
+        force, torque = wrench(forces[pointIdx], torque[pointIdx])
+    
     ########## Your code ends here ##########
 
     return form_closure_program(F)
