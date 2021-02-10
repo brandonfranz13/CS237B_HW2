@@ -25,7 +25,7 @@ class AccelerationLaw(tf.keras.layers.Layer):
         mu, th = inputs
 
         ########## Your code starts here ##########
-        a = g * (tf.sin(th) - mu * tf.cos(th))  # TODO
+        a = self.g * (tf.sin(th) - mu * tf.cos(th))  # TODO
         ########## Your code ends here ##########
 
         # Ensure output acceleration is positive
@@ -91,7 +91,7 @@ def build_baseline_model():
     ########## Your code starts here ##########
     # TODO: Replace the following with your model from build_model().
 
-    a_pred = tf.keras.layers.Dense(1, name='a')(img_input)
+    a_pred = build_model()
     ########## Your code ends here ##########
 
     return tf.keras.Model(inputs=[img_input], outputs=[a_pred])

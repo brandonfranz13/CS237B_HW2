@@ -15,7 +15,7 @@ def load_accelerations(filename, dataset):
 
     accelerations = []
     for d in dataset:
-        path_video = d.numpy().decode('utf-8')
+        path_video = d.numpy().decode('utf-8').replace("\\", "/")
         accelerations.append(accelerations_dict[path_video])
     return np.array(accelerations, dtype=np.float32)
 

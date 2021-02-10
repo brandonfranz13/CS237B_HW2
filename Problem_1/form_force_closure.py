@@ -67,6 +67,7 @@ def cone_edges(f, mu):
     if D == 2:
         ########## Your code starts here ##########
         edges = [np.zeros(D)] * 2
+        friction = mu * f
 
         ########## Your code ends here ##########
 
@@ -74,6 +75,7 @@ def cone_edges(f, mu):
     elif D == 3:
         ########## Your code starts here ##########
         edges = [np.zeros(D)] * 4
+        friction = mu * f
 
         ########## Your code ends here ##########
 
@@ -135,7 +137,7 @@ def is_in_form_closure(forces, points):
     
     for pointIdx in range(len(points)):
         F[:, pointIdx] = np.concatenate([force, torque])
-        force, torque = wrench(forces[pointIdx], torque[pointIdx])
+        force, torque = wrench(forces[pointIdx], points[pointIdx])
     
     ########## Your code ends here ##########
 
