@@ -66,9 +66,13 @@ def cone_edges(f, mu):
     D = f.shape[0]
     if D == 2:
         ########## Your code starts here ##########
-        edges = [np.zeros(D)] * 2
         friction = mu * f
-
+        edges = [np.zeros(D)] * 2
+        edges[0] = f + friction
+        edges[1] = f - friction
+        print('Mu: ', mu)
+        print('Force: ', f)
+        print('Edges: ', edges)
         ########## Your code ends here ##########
 
     # Spatial wrenches
@@ -77,6 +81,10 @@ def cone_edges(f, mu):
         edges = [np.zeros(D)] * 4
         friction = mu * f
 
+        # for i in range(4):
+            # cross = cross_matrix([1, 1]
+            # normal = 
+            # edges[i] =
         ########## Your code ends here ##########
 
     else:
@@ -158,6 +166,7 @@ def is_in_force_closure(forces, points, friction_coeffs):
     """
     ########## Your code starts here ##########
     # TODO: Call cone_edges() to construct the F matrix (not necessarily 6 x 7)
+    edges = cone_edges(forces[0], friction_coeffs[0])
     F = np.zeros((6,7))
 
     ########## Your code ends here ##########
