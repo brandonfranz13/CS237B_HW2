@@ -66,13 +66,11 @@ def cone_edges(f, mu):
     D = f.shape[0]
     if D == 2:
         ########## Your code starts here ##########
-        friction = mu * f
+        friction = [mu * f[1], -mu * f[0]]
+        
         edges = [np.zeros(D)] * 2
         edges[0] = f + friction
         edges[1] = f - friction
-        print('Mu: ', mu)
-        print('Force: ', f)
-        print('Edges: ', edges)
         ########## Your code ends here ##########
 
     # Spatial wrenches
@@ -166,9 +164,17 @@ def is_in_force_closure(forces, points, friction_coeffs):
     """
     ########## Your code starts here ##########
     # TODO: Call cone_edges() to construct the F matrix (not necessarily 6 x 7)
-    edges = cone_edges(forces[0], friction_coeffs[0])
-    F = np.zeros((6,7))
+    # force, torque = wrench(forces[0], points[0])
+    # wrenchDims = len(force) + len(torque)
+    M = len(points)
+    # contact
+    # F = np.empty((wrenchDims, ))
 
+    F = []
+    for i in range(M):
+        edges = cone_edges(forces[i], friction_coeffs[i])
+        F = [F, edges]
+    F = np.array(F)
     ########## Your code ends here ##########
 
     return form_closure_program(F)

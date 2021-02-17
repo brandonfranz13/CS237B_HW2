@@ -62,8 +62,8 @@ def build_model():
     # TODO: Create your neural network and replace the following two layers
     #       according to the given specification.
 
-    conv_layer = tf.kera.layers.Conv2D(32, (3,3), activation = 'relu')(img_input)
-    conv_layer = tf.flattern(conv_layer)
+    conv_layer = tf.kera.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
+    conv_layer = tf.layers.flatten(conv_layer)
     p_class = tf.keras.layers.Dense(32, activation = 'softmax', name='p_class')(conv_layer)
     mu = tf.keras.layers.Dense(32, name='mu', activation = 'relu')(p_class)
     ########## Your code ends here ##########
@@ -93,11 +93,14 @@ def build_baseline_model():
 
     ########## Your code starts here ##########
     # TODO: Replace the following with your model from build_model().
+    
+    conv_layer = tf.kera.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
+    conv_layer = tf.layers.flatten(conv_layer)
+    a_pred = tf.keras.layers.Dense(1, activation = 'relu', name='a_pred')(conv_layer)
 
-    a_pred = build_model()
     ########## Your code ends here ##########
 
-    return tf.keras.Model(inputs=[img_input], outputs=[a_pred])
+    return tf.keras.Model(inputs=[img_input, th_input], outputs=[a_pred])
 
 def loss(a_actual, a_pred):
     """

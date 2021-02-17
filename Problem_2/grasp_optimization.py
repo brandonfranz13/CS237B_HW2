@@ -61,16 +61,32 @@ def grasp_optimization(grasp_normals, points, friction_coeffs, wrench_ext):
     transformations = [compute_local_transformation(n) for n in grasp_normals]
 
     ########## Your code starts here ##########
-    As = []
-    bs = []
-    cs = []
-    ds = []
-    F = np.zeros(1)
-    g = np.zeros(1)
-    h = np.zeros(1)
+    P_skew = [cross_matrix(points[i]) for i in range(M)]
+    Phi = [[transformations(i); P_skew(i) @ transformations(i)] for i in range(M)]
+    
+    
+    if D == 2:
+        As = []
+        bs = np.zeros(M)
+        cs = []
+        ds = np.zeros(M)
+        F = Phi
+        g = -wrench_ext
+        h = np.zeros()
 
-    x = cp.Variable(1)
+        x = cp.Variable(M)
+    
+    elif D == 3:
+        As = []
+        bs = []
+        cs = []
+        ds = []
+        F = np.zeros(1)
+        g = np.zeros(1)
+        h = np.zeros()
 
+        x = cp.Variable(1)
+        
     x = solve_socp(x, As, bs, cs, ds, F, g, h, verbose=False)
 
     # TODO: extract the grasp forces from x as a stacked 1D vector
