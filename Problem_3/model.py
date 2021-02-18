@@ -62,9 +62,10 @@ def build_model():
     # TODO: Create your neural network and replace the following two layers
     #       according to the given specification.
 
-    conv_layer = tf.kera.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
-    conv_layer = tf.layers.flatten(conv_layer)
-    p_class = tf.keras.layers.Dense(32, activation = 'softmax', name='p_class')(conv_layer)
+    conv1 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
+    conv2 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(conv1)
+    conv2 = tf.keras.layers.Flatten()(conv2)
+    p_class = tf.keras.layers.Dense(32, activation = 'softmax', name='p_class')(conv2)
     mu = tf.keras.layers.Dense(32, name='mu', activation = 'relu')(p_class)
     ########## Your code ends here ##########
 
@@ -94,9 +95,10 @@ def build_baseline_model():
     ########## Your code starts here ##########
     # TODO: Replace the following with your model from build_model().
     
-    conv_layer = tf.kera.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
-    conv_layer = tf.layers.flatten(conv_layer)
-    a_pred = tf.keras.layers.Dense(1, activation = 'relu', name='a_pred')(conv_layer)
+    conv1 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
+    conv2 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(conv1)
+    conv2 = tf.keras.layers.Flatten()(conv2)
+    a_pred = tf.keras.layers.Dense(1, activation = 'relu', name='a_pred')(conv2)
 
     ########## Your code ends here ##########
 
