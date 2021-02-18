@@ -62,30 +62,33 @@ def grasp_optimization(grasp_normals, points, friction_coeffs, wrench_ext):
 
     ########## Your code starts here ##########
     P_skew = [cross_matrix(points[i]) for i in range(M)]
-    Phi = [[transformations(i); P_skew(i) @ transformations(i)] for i in range(M)]
+    Phi = np.array([np.vstack([transformations[i], P_skew[i] @ transformations[i]]) for i in range(M)])
+    print('Phi shape: ', Phi.shape)
     
-    
-    if D == 2:
-        As = []
-        bs = np.zeros(M)
-        cs = []
-        ds = np.zeros(M)
-        F = Phi
-        g = -wrench_ext
-        h = np.zeros()
+    n = D*M + 1
+    n_i = n - 1
+    p = N
 
-        x = cp.Variable(M)
+    F = Phi
+    g = -wrench_ext
+    h = np.zeros(n)
+    h(end) = 1
+
+    if D == 2:
+        As = [np.zeros((n_i, n)) for i in range(M)]
+        bs = [np.zeros(n_i) for i in range(M)]
+        cs = [h for i in range(M)]
+        ds = [np.zeros(1) for i in range(M)]
+        
+        x = cp.Variable(n)
     
     elif D == 3:
-        As = []
-        bs = []
-        cs = []
-        ds = []
-        F = np.zeros(1)
-        g = np.zeros(1)
-        h = np.zeros()
-
-        x = cp.Variable(1)
+        As = [np.zeros((n_i, n)) for i in range(M)]
+        bs = [np.zeros(n_i) for i in range(M)]
+        cs = [h for i in range(M)]
+        ds = [np.zeros(1) for i in range(M)]
+        
+        x = cp.Variable(n)
         
     x = solve_socp(x, As, bs, cs, ds, F, g, h, verbose=False)
 
