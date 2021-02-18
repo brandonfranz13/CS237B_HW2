@@ -66,7 +66,8 @@ def build_model():
     conv2 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(conv1)
     conv2 = tf.keras.layers.Flatten()(conv2)
     p_class = tf.keras.layers.Dense(32, activation = 'softmax', name='p_class')(conv2)
-    mu = tf.keras.layers.Dense(32, name='mu', activation = 'relu')(conv2)
+    mu_class= tf.keras.layers.Dense(32, name='mu', activation = 'relu')(conv2)
+    mu = tf.tensordot(mu_class, p_class, 1)
     ########## Your code ends here ##########
 
     a_pred = AccelerationLaw(name='a')((mu, th_input))
