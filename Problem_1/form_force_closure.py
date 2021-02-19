@@ -184,8 +184,10 @@ def is_in_force_closure(forces, points, friction_coeffs):
     F = []
     for i in range(M):
         edges = cone_edges(forces[i], friction_coeffs[i])
-        F_i = [wrench(edge, points[i]) for edge in edges]
-        F = [F, F_i]
+        for edge in edges:
+            force, torque = wrench(edge, points[i])
+            F_i = np.vstack([force,torque])
+            F.append(F_i)
     F = np.array(F)
 
     ########## Your code ends here ##########

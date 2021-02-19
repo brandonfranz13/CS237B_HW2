@@ -141,8 +141,11 @@ def precompute_force_closure(grasp_normals, points, friction_coeffs):
         """
 
         ########## Your code starts here ##########
-        # TODO: Compute the force closure forces as a stacked vector of shape (N*M)
-        f = np.zeros(M*D)
+        # TODO: Compute the force closure forces as a stacked vector of shape (D*M)
+        
+        for wrench in wrench_ext:
+            wrench_p = max(0, wrench)
+            wrench_n = max(0, -wrench)
 
         ########## Your code ends here ##########
 
