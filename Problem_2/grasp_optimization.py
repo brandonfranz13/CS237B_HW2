@@ -72,7 +72,7 @@ def grasp_optimization(grasp_normals, points, friction_coeffs, wrench_ext):
     F = Phi
     g = -wrench_ext
     h = np.zeros(n)
-    h(end) = 1
+    h[-1] = 1
 
     if D == 2:
         As = [np.zeros((n_i, n)) for i in range(M)]

@@ -111,7 +111,7 @@ def loss(a_actual, a_pred):
 
     ########## Your code starts here ##########
     error = a_actual - a_pred
-    l = tf.nn.l2_loss(error)
+    l = tf.norm(error)
     ########## Your code ends here ##########
 
     return l
