@@ -77,12 +77,23 @@ def cone_edges(f, mu):
     elif D == 3:
         ########## Your code starts here ##########
         edges = [np.zeros(D)] * 4
-        friction = mu * f
+        friction = mu * np.linalg.norm(f)
+        
+        if f[1] == 0 and f[2] == 0:
+            perpendicular1 = np.cross(f, [0,1,0])
+        else:
+            perpendicular1 = np.cross(f, [1,0,0])
+        
+        perpendicular1_unit = perpendicular1 / np.linalg.norm(perpendicular1)
 
-        # for i in range(4):
-            # cross = cross_matrix([1, 1]
-            # normal = 
-            # edges[i] =
+        perpendicular2 = np.cross(perpendicular1, f)
+        perpendicular2_unit = perpendicular2 / np.linalg.norm(perpendicular2)
+
+        edges[0] = friction * perpendicular1_unit + f
+        edges[1] = -friction * perpendicular1_unit + f
+        edges[2] = friction * perpendicular2_unit + f
+        edges[3] = -friction * perpendicular2_unit + f
+
         ########## Your code ends here ##########
 
     else:
@@ -173,8 +184,10 @@ def is_in_force_closure(forces, points, friction_coeffs):
     F = []
     for i in range(M):
         edges = cone_edges(forces[i], friction_coeffs[i])
-        F = [F, edges]
+        F_i = [wrench(edge, points[i]) for edge in edges]
+        F = [F, F_i]
     F = np.array(F)
+
     ########## Your code ends here ##########
 
     return form_closure_program(F)

@@ -65,8 +65,8 @@ def build_model():
     conv1 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(img_input)
     conv2 = tf.keras.layers.Conv2D(32, (3,3), activation = 'softmax')(conv1)
     conv2 = tf.keras.layers.Flatten()(conv2)
-    p_class = tf.keras.layers.Dense(32, activation = 'softmax', name='p_class')(conv2)
-    mu = tf.keras.layers.Dense(32, name='mu', activation = 'relu')(p_class)
+    p_class = tf.keras.layers.Dense(1, activation = 'softmax', name='p_class')(conv2)
+    mu = tf.keras.layers.Dense(1, name='mu', activation = 'relu')(p_class)
     ########## Your code ends here ##########
 
     a_pred = AccelerationLaw(name='a')((mu, th_input))
@@ -111,7 +111,8 @@ def loss(a_actual, a_pred):
 
     ########## Your code starts here ##########
     error = a_actual - a_pred
-    l = tf.norm(error)
+    #l = tf.norm(error)
+    l = tf.nn.l2_loss(error)
     ########## Your code ends here ##########
 
     return l
